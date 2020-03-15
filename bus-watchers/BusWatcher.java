@@ -10,21 +10,22 @@ import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class BusWatcher{
-    public static void main(String[] args) throws IOException, InterruptedException{
-        //System.out.println("Hello World");
+    public static void main(String[] args){
 
-        HttpClient client = HttpClient.newHttpClient();
+        //loop
+        String APIKey = "TEST";
+        int[] stops = {68004, 67655, 67652, 68007, 640, 690, 700, 81755, 58114, 361, 80432, 620, 2114};
 
-        HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create("http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_67655.json?key=TEST"))
-        .timeout(Duration.ofMinutes(2))
-        .header("Content-Type", "application/json")
-        //.POST(BodyPublishers.ofFile(Paths.get("file.json")))
-        .build();
+        while(true){ // may be changed to when time limit is up
 
-        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-        System.out.println(response.body());
+            for(int i : stops){
+                Runnable runnable = new APICall("http://api.pugetsound.onebusaway.org/api/where/arrivals-and-departures-for-stop/1_" + i + ".json?key=" + APIKey);
+                runnable.run();
+            }
+            break;
+        }
     }
 }
