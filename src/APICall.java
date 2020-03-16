@@ -4,6 +4,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
+//import org.json.simple.JSONArray;
 
 public class APICall implements Runnable{
 
@@ -28,6 +29,7 @@ public class APICall implements Runnable{
             response = client.send(request, BodyHandlers.ofString());
             System.out.println(response.body());
         } catch (Exception ex){
+
             System.out.println("whoops!");
             //cry
         }

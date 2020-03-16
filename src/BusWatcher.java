@@ -1,16 +1,3 @@
-import java.io.IOError;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpClient.Version;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse.BodyHandler;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class BusWatcher{
     public static void main(String[] args){
