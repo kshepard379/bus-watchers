@@ -40,8 +40,21 @@ public class APICall implements Runnable{
         this.stopName = stopName;
     }
 
-    public void printEntry(String[] stopData) throws IOException {
-    	FileWriter pw = new FileWriter("",true);
+    public void printEntryToCSV(String[] stopData) throws IOException {
+    	FileWriter pw = new FileWriter(System.getProperty("user.dir") + "/stops.csv",true);
+    	if(stopData.length != 0) {
+    		
+    		for(int i = 0; i < stopData.length - 1; i++) {
+    			
+    			pw.append(stopData[i] + ", ");
+    			System.out.print(stopData[i] + ", ");
+    		}
+    		pw.append(stopData[stopData.length - 1] + "\n");
+    		System.out.println(stopData[stopData.length - 1]);
+    	}
+    	
+    	pw.flush();
+    	pw.close();
     }
     
     public void run(){
@@ -103,12 +116,14 @@ public class APICall implements Runnable{
                     	// 0-stop number, 1-stop name, 2-route number, 3-on time status, 4-how late/early
             			String[] stopData = {stopNumber, stopName, route, onTimeStatus, punctuality.toString()};
             			
+            			printEntryToCSV(stopData);
             			//TODO check if entry is duplicate
-            			
+            			/*
             			for(String s: stopData) {
             				System.out.println(s);
             			}
             			System.out.println();
+            			*/
             		}
             	}
             }       
