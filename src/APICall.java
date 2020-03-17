@@ -81,28 +81,29 @@ public class APICall implements Runnable{
             JSONParser parser = new JSONParser();
 
             JSONObject result = (JSONObject)parser.parse(response.body());
-            current = Long.parseLong(result.get("currentTime").toString()) / 60000;
+            current = Long.parseLong(result.get("currentTime").toString());
             result = (JSONObject) result.get("data");
             result = (JSONObject) result.get("entry");
             JSONArray arrivals = (JSONArray) result.get("arrivalsAndDepartures");
             
             //only continue if there are any routes returned in the first place to grab data from
             if(arrivals.size() > 0) {
-
+            	
+            	int count2 = 0;
             	//loop through each returned arrival
             	for (int i = 0; i < arrivals.size(); i++) {
             		
             		//get timestamp data for each arrival to check when a bus is nearby the stop
             		JSONObject arrivalElements = (JSONObject) arrivals.get(i);
-            		predicted = Long.parseLong(arrivalElements.get("predictedArrivalTime").toString()) / 60000;
-            		scheduled = Long.parseLong(arrivalElements.get("scheduledArrivalTime").toString()) / 60000;
+            		predicted = Long.parseLong(arrivalElements.get("predictedArrivalTime").toString());
+            		scheduled = Long.parseLong(arrivalElements.get("scheduledArrivalTime").toString());
             		String route = arrivalElements.get("routeShortName").toString();
             		
             		//if bus is here NOW (predicted time in minutes equals current time in minute)
-            		if((predicted - current) == 0) {
-            			
+            		if((predicted - current) / 60000 == 0) {
+            			count2++;
             			//keep track if bus was late/on time/ early, and by how much
-            			Long punctuality = (predicted - scheduled);
+            			Long punctuality = (predicted - scheduled) / 60000;
             			String onTimeStatus;
             			
             			if (punctuality == 0) {
@@ -126,6 +127,7 @@ public class APICall implements Runnable{
             			*/
             		}
             	}
+            	System.out.println(stopNumber + ": "+ count2 +"/" + arrivals.size());
             }       
         }
         catch (ParseException pe) {
